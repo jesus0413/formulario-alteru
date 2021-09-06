@@ -233,7 +233,7 @@ export const Register = () => {
          </div>
          </Row>
  
-         <button type="submit">Enviar</button>
+        
       </form>
    </> 
     
