@@ -1,50 +1,119 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 import './register.css';
-import React, { useState } from 'react';
-import { Row } from 'react-bootstrap';
-import { Formik, Form, Field, ErrorMessage } from 'formik';
+import { Button, Col, Form, Row } from 'react-bootstrap';
+import { useFormik } from 'formik';
+import { useState } from 'react';
+import { Alert } from 'react-bootstrap';
 import { db } from '../../utils/firebase';
-import { addDoc, collection } from "@firebase/firestore"
+import { addDoc, collection } from '@firebase/firestore';
 
 
 export const Register = () => {
 
     const [FormSend, setFormSend] = useState(false);
    
-    const [nombre, setNombre] = useState("");
-    const [direccion, setDireccion] = useState("");
-    const [estadoCivil, setEstadoCivil] = useState("");
-    const [ciudadresidencia, setCiudadResidencia] = useState("");
-    const [tipodeDocumento, setTipoDeDocumento] = useState("");
-    const [numerodeDocumento, setNumeroDeDocumento] = useState("");
-    const [birthday, setBirthday] = useState("");
-    const [birthPlace, setBirtPlace] = useState("");
-    const [email, setEmail] = useState("");
-    const [diploma, setDiploma] = useState("");
-    const [optioncourse, setOptionCourse] = useState("");
-    const [course, setCourse] = useState("");
-    const [englishLevel, setEnglishLevel] = useState("");
-    const [useEnglish, setUseEnglish] = useState(""); 
+    const formik = useFormik ({
+       initialValues: {
+         fullName:'',
+         address:'',  
+         status:'',
+         residence:'',
+         document:{
+            type:'',
+            number:0,
+         },
+         birthday:{
+            date: "00-00-000",
+            birthPlace:'',
+         },
+         email:'',
+         diploma:'',
+         programming:{
+            option:"",
+            name:"",
+         },
+         english:{
+            level:"",
+            useEnglish:"",
+         },
+         score:"",
+         experience:{
+            years: "",
+            area:"",
+         },
+         entrepreneurship:{
+            option:"",
+            name:"",
+         },
+         platforms:{
+            option:"",
+            name:"",
+         },
+         computer:"",
+         projects:{
+            option:"",
+            name:"",
+         },
+         hobbies:"",
+         reason:"",
+         success:"",
+         education:"",
+         dreamslife:"",
+       }
+    });
        
    async function handleSubmit(e) {
+      console.log(formik.values);
       e.preventDefault();
       console.log("Click Firebase");
       try {
         const docRef = await addDoc(collection(db, "users"), {
-         nombre: '',
-         direccion: '',
-         estadoCivil: '',
-         ciudadresidencia: '',
-         tipodeDocumento:'',
-         numerodeDocumento: '',
-         birthday: '',
-         birthPlace: '',
-         email: '',
-         diploma: '',
-         optionCourse: '',
-         course: '',
-         englishLevel: '',
-         useEnglish: '',
+               fullName:formik.values.fullName,
+               address:formik.values.address,
+               status:formik.values.status,
+               residence:formik.values.residence,
+               document:{
+                  typo:formik.values.document.type,
+                  number:formik.values.document.number,
+               },
+               birthday:{
+                  date: formik.values.birthday.date,
+                  birthPlace:formik.values.birthday.birthPlace,
+               },
+               email:formik.values.email,
+               diploma:formik.values.diploma,
+               programming:{
+                  option:formik.values.programming.option,
+                  name:formik.values.programming.name,
+               },
+               english:{
+                  level:formik.values.english.level,
+                  useEnglish:formik.values.english.useEnglish,
+               },
+               score:formik.values.score,
+               experience:{
+                  years:formik.values.experience.years,
+                  area:formik.values.experience.area,
+               },
+               entrepreneurship:{
+                  option:formik.values.entrepreneurship.option,
+                  name:formik.values.entrepreneurship.name,
+               },
+               platforms:{
+                  option:formik.values.platforms.option,
+                  name:formik.values.platforms.name,
+               },
+             
+               computer:formik.values.computer,
+               projects:{
+                  option:formik.values.projectsprojects.option,
+                  name:formik.values.projectsprojects.name,
+               },
+               hobbies:formik.values.hobbies,
+               reason:formik.values.reason,
+               success:formik.values.success,
+               education:formik.values.education,
+               dreamslife:formik.values.dreamslife, 
         });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
@@ -53,369 +122,451 @@ export const Register = () => {
     }
   
 
-   return(
-      <>
-      <Formik
-         initialValues= {{
-             nombre: '',
-             direccion: '',
-             estadoCivil: '',
-             ciudadresidencia: '',
-             tipodeDocumento:'',
-             numerodeDocumento: '',
-             birthday: '',
-             birthPlace: '',
-             email: '',
-             diploma: '',
-             optionCourse: '',
-             course: '',
-             englishLevel: '',
-             useEnglish: '',
-             
-         }}
-         validate={(valores)=>{
-             const errors = {};
-
-            //Validacion nombre
-             if(!valores.nombre){
-                 errors.nombre = 'Por favor ingresar su nombre'
-                 //console.log('Por favor ingresar un nombre');
-             }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.nombre)){
-                errors.nombre = 'El nombre solo puede contener letras y espacios'
-             }
-
-            //Validacion Direccion
-             if(!valores.direccion){
-                errors.direccion = 'Por favor ingresar su direccion'
-                //console.log('Por favor ingresar la dierccion');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.direccion)){
-               errors.direccion = 'La direccion solo puede contener letras, numeros y espacios'
-            }
-
-            //Validacion del Estado civil
-            if(!valores.estadoCivil){
-              errors.estadoCivil = 'Por favor seleccione su estado civil'
-              //console.log('Por favor ingresar estado civil');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]/.test(valores.estadoCivil)){
-               errors.estadoCivil = 'Selecciona alguna de las opciones'
-            }
-             //Validacion Ciudad de residencia
-             if(!valores.ciudadresidencia){
-                errors.ciudadresidencia = 'Por favor digite la ciudad de nacimiento'
-               // console.log('Por favdr digite la ciudad de nacimiento');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.ciudadresidencia)){
-               errors.ciudadresidencia = 'La ciudad de nacimiento solo puede contener letras y espacios'
-            }
-
-             //Validacion Tipo de documento
-             if(!valores.tipodeDocumento){
-                errors.tipodeDocumento = 'Por favor Selecciona alguna de las opciones'
-               // console.log('Selecciona alguna de las opciones');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.tipodeDocumento)){
-               errors.tipodeDocumento = 'Selecciona alguna de las opciones'
-            }
-
-            //Validacion numero de Documento
-             if(!valores.numerodeDocuemento){
-                errors.numerodeDocuemento = 'Por favor ingresar su numero de identificación'
-               // console.log('Por favor ingresar su numero de identificación');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.numerodeDocuemento)){
-               errors.numerodeDocuemento = 'El numero de identificación solo puede tener numeros y puntos'
-            }
-
-            //Validacion numero de fecha de nacimento
-            if(!valores.birthday){
-                errors.birthday = 'Por favor ingresar su fecha de nacimiento'
-               // console.log('Por favor ingresar fecha de nacimiento');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.birthday)){
-               errors.birthday = 'Ingrese su fecha de nacimiento primero dia luego mes por ultimo año'
-            }
-
-            //Validacion lugar de nacimento
-            if(!valores.birthPlace){
-                errors.birthPlace = 'Por favor ingresar ciudad de nacimiento'
-               // console.log('Por favor ingresar la ciudad de nacimiento');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.birthPlace)){
-               errors.birthPlace = 'El nombre de la ciudad solo puede contener letras y espacios'
-            }
-
-            //Validacion email
-            if(!valores.email){
-                errors.email = 'Por favor ingresar su correo electrónico'
-               // console.log('Por favor ingresar un nombre');
-            }else if(!/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/.test(valores.email)){
-               errors.email = 'Verifica el correo electrónico'
-            }
-
-            //Validacion ultimo diploma
-            if(!valores.diploma){
-                errors.diploma = 'Por favor ingresar el ultimo nombre del diploma obtenido'
-               // console.log('Por favor ingresar un nombre');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]{1,40}$/.test(valores.diploma)){
-               errors.diploma = 'El nombre del diploma solo puede contener letras y espacios'
-            }
-
-            //Validacion seleccion  de curso
-            if(!valores.optionCourse){
-                errors.optionCourse = 'Por favor seleccione alguna de las opciones'
-               // console.log('Por favor escoge alguna opcion');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]/.test(valores.optionCourse)){
-               errors.optionCourse = 'Escoge alguna de las opciones '
-            }
-
-            //Validacion nombre del curso
-              if(!valores.course){
-                errors.course = 'Por favor ingresar el nombre del curso'
-               // console.log('Por favor ingresar el nombre del curso');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]/.test(valores.course)){
-               errors.course = 'El nombre del curso solo se permite en letras y espacios'
-            }
-
-            //Validacion nivel de ingles
-               if(!valores.englishLevel){
-                errors.englishLevel = 'Por favor seleccione alguna de las opciones'
-               // console.log('Por favor seleccione alguna de las opciones');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]/.test(valores.englishLevel)){
-               errors.englishLevel = 'Escoge alguna de las opciones'
-            }
-
-            //Validacion nivel de ingles
-            if(!valores.useEnglish){
-                errors.useEnglish = 'Por favor seleccione alguna de las opciones'
-               // console.log('Por favor seleccione alguna de las opciones');
-            }else if(!/^[a-zA-ZÀ-ÿ\s]/.test(valores.useEnglish)){
-               errors.useEnglish = 'Escoge alguna de las opciones'
-            }
-
-
-
-             return errors;
+   return( <div className='formulario'>
+      <Form  onSubmit={ handleSubmit } >
             
-         }}
-         onSubmit={(info, {resetForm}) => {
-             resetForm();
-             console.log(info);
-             console.log('Formulario enviado');
-             setFormSend(true);
-             setTimeout(() => setFormSend(false), 5000);
-         }}
-      
-      >
-          {({ errors}) => (
-           <Form className='formulario' onSubmit={handleSubmit} >
-            {console.log(errors)}
-           <Row className="mb-3">
-              <div className="col-md-6">
-                 <label htmlFor="nombre">Nombre Completo</label>
-                 <Field
-                    type="text"
-                    name="nombre"
-                    placeholder=""
-                    id="nombre"
-                    className="form-control"
-                    onChange={(e) => setNombre(e.target.value)}
-                    value={nombre}
-                    
-                 />
-                <ErrorMessage name="nombre" component={() => ( <div className="error">{errors.nombre}</div>)} />
-               
-              </div>
-      
-              <div className="col-md-6">
-                 <label htmlFor="direccion">Dirección</label>
-                 <Field
-                    type="text"
-                    name="direccion"
-                    placeholder=""
-                    id="direccion"
-                    className="form-control" 
-                    onChange={(e) => setDireccion(e.target.value)}
-                    value={ direccion}                  
-                 />
-                
-               <ErrorMessage name="direccion" component={() => ( <div className="error">{errors.direccion}</div>)} />
-              </div>
+           <Row >
+              <Col className="col-md-6">
+                <Form.Group className="mb-3">
+                  <Form.Label htmlFor="fullName">Nombre Completo</Form.Label>
+                  <Form.Control
+                     type="text"
+                     name="fullName"
+                     placeholder=""
+                     id="fullname"
+                     className="form-control"
+                     onChange={formik.handleChange}
+                     value={ formik.values.fullName} required
+                   />
+                </Form.Group>
+               </Col>           
+               <Col className="col-md-6">
+                  <Form.Group className="mb-3">
+                        <Form.Label htmlFor="address">Dirección</Form.Label>
+                     <Form.Control
+                        type="text"
+                        name="address"
+                        placeholder=""
+                        id="address"
+                        className="form-control" 
+                        onChange={formik.handleChange}
+                        value={formik.values.address}
+                        required                            
+                        /> 
+                  </Form.Group>
+                </Col>      
               </Row>
-              <Row className="mb-3">
-                <div className="col-md-6">
-                   <label htmlFor="estadocivil">Estado Civil</label>
-                   <Field name="estadoCivil" 
+              <Row>
+              <Col className="col-md-6">
+                <Form.Group className="mb-3">               
+                   <Form.Label htmlFor="estadocivil">Estado Civil</Form.Label>
+                   <Form.Control name="status" 
                           as="select"
                           className="form-select"
-                          onChange={(e) => setEstadoCivil(e.target.value)}
-                          value={estadoCivil}>
-                     <option value="Selecciona">Selecciona...</option>
-                     <option value="Soltero">Soltero</option>
-                     <option value="Casado">Casado</option>
-                   </Field>
-                   <ErrorMessage name="estadoCivil" component={() => ( <div className="error">{errors.estadoCivil}</div>)} />
-                </div>
+                          onChange={formik.handleChange}
+                          value={formik.values.status} required>
+                            <option value="Selecciona">Selecciona...</option>
+                            <option value="Soltero">Soltero</option>
+                            <option value="Casado">Casado</option>
+                   </Form.Control>
+                  </Form.Group>
+             </Col>
+                  
 
-                <div className="col-md-6">
-                   <label htmlFor="ciudad de residencia">Ciudad de residencia</label>
-                   <Field
+             <Col className="col-md-6">
+                <Form.Group className="mb-3"> 
+                   <Form.Label htmlFor="residence">Ciudad de residencia</Form.Label>
+                   <Form.Control
                       type="text"
-                      name="ciudadresidencia"
+                      name="residence"
                       placeholder=""
-                      id="ciudad"
+                      id="residence"
                       className="form-control" 
-                      onChange={(e) => setCiudadResidencia(e.target.value)}
-                      value={ciudadresidencia}
-                    />
-                    <ErrorMessage name="ciudadresidencia" component={() => ( <div className="error">{errors.ciudadresidencia}</div>)} />
-                </div>
+                      onChange={formik.handleChange}
+                      value={formik.values.residence}/>            
+                  </Form.Group>
+             </Col>
              </Row>
-            <Row className="mb-3">
-                <div className="col-md-6">
-                   <label htmlFor="documento">Tipo de documento</label>
-                   <Field  name="tipodedocumento" as="select" 
-                           className="form-select"
-                           onChange={(e) => setTipoDeDocumento(e.target.value)}
-                           value={tipodeDocumento}>
-                     <option value="Selecciona">Selecciona...</option>
-                     <option value="Cedula">Cedula de Ciudadania</option>
-                     <option value="TarjetaIdentidad">Tarjeta de Identidad</option>
-                     <option value="Pasaporte">Pasaporte</option>
-                   </Field>
-                   <ErrorMessage name="tipodeDocumento" component={() => ( <div className="error">{errors.tipodeDocumento}</div>)} />
-                </div>
-                <div className="col-md-6">
-                   <label htmlFor="numerodeDocumento">Número de documento</label>
-                   <Field 
+             <Row>
+              <Col className="col-md-6">
+                <Form.Group className="mb-3">
+                   <Form.Label htmlFor="document.type">Tipo de documento</Form.Label>
+                     <Form.Control  name="document.type" as="select" 
+                             className="form-select"
+                             onChange={formik.handleChange}
+                             value={formik.values.document.type}   required>
+                       <option value="Selecciona">Selecciona...</option>
+                       <option value="Cedula">Cedula de Ciudadania</option>
+                       <option value="Cedula">Cedula Extranjera</option>
+                       <option value="TarjetaIdentidad">Tarjeta de Identidad</option>
+                       <option value="Pasaporte">Pasaporte</option>
+                     </Form.Control>
+                    </Form.Group>
+               </Col>
+               <Col className="col-md-6">
+                <Form.Group className="mb-3">
+                
+                   <Form.Label htmlFor="document.number">Número de documento</Form.Label>
+                   <Form.Control
                       type="number"
-                      name="Numero de documento"
+                      name="document.number"
                       placeholder=""
-                      id="numero de documento"
+                      id="document.number"
                       className="form-control" 
-                      onChange={(e) => setNumeroDeDocumento(e.target.value)}
-                      value={numerodeDocumento}
+                      onChange={formik.handleChange}
+                      value={formik.values.document.number}
                    />
-                   <ErrorMessage name="numerodeDocumento" component={() => ( <div className="error">{errors.numerodeDocumento}</div>)} />
-                </div>
+                  </Form.Group>
+               </Col>
              </Row>
-             <Row className="mb-3">
-                <div className="col-md-6">
-                   <label htmlFor="fecha">Fecha de nacimiento</label>
-                   <Field
+
+            <Row>
+              <Col className="col-md-6">
+                <Form.Group className="mb-3"> 
+                <Form.Label htmlFor="birthday">Fecha de nacimiento</Form.Label>
+                   <Form.Control
                       type="date"
                       name="birthday"
                       placeholder="DD/MM/AA"
-                      id="fecha de nacimiento"
+                      id="birthday"
                       className="form-control"
-                      onChange={(e) => setBirthday(e.target.value)}
-                      value={birthday} 
+                      onChange={formik.handleChange}
+                      value={formik.values.birthday.date}
                    />
-                   <ErrorMessage name="birthday" component={() => ( <div className="error">{errors.birthday}</div>)} />
-                </div>
-                <div className="col-md-6">
-                   <label htmlFor="ciudad de nacimiento">Ciudad de nacimiento</label>
-                   <Field
+                   </Form.Group>
+               </Col> 
+               <Col className="col-md-6">
+                <Form.Group className="mb-3">  
+                   <Form.Label htmlFor="birthday.birthdayPlace">Ciudad de nacimiento</Form.Label>
+                   <Form.Control
                       type="text"
-                      name="birthPlace"
+                      name="birthday.birthPlace"
                       placeholder=""
-                      id="ciudad de nacimiento"
+                      id="birthday.birthdayPlace"
                       className="form-control" 
-                      onChange={(e) => setBirtPlace(e.target.value)}
-                      value={birthPlace}
+                      onChange={formik.handleChange}
+                      value={formik.values.birthday.birthPlace}
                    />
-                   <ErrorMessage name="birthPlace" component={() => ( <div className="error">{errors.birthPlace}</div>)} />
-                </div>
+                  </Form.Group> 
+               </Col> 
            </Row>
 
-           <div >
-            <label htmlFor="email">Correo electrónico</label>
-              <Field
-                 type="email"
-                 name="email"
-                 placeholder=""
-                 id="email" 
-                 className="form-control" 
-                 onChange={(e) => setEmail(e.target.value)}
-                 value={email}        
-              />
-            <ErrorMessage name="email" component={() => ( <div className="error">{errors.email}</div>)} />
-           </div>
-           <div>
-              <label htmlFor="diploma">Último diploma obtenido</label>
-              <Field
-                 type="text"
-                 name="diploma"
-                 placeholder=""
-                 id="diploma"
-                 className="form-control" 
-                 onChange={(e) => setDiploma(e.target.value)}
-                 value={diploma}               
-              />
-            <ErrorMessage name="diploma" component={() => ( <div className="error">{errors.diploma}</div>)} />
-           </div>
+           <Row>
+                 <Col>
+                    <Form.Group className="mb-3">
+                     <Form.Label htmlFor="email">Correo electrónico</Form.Label>
+                      <Form.Control
+                         type="email"
+                         name="email"
+                         placeholder=""
+                         id="email" 
+                         className="form-control" 
+                         onChange={formik.handleChange}
+                         value={formik.values.email}       
+                      />
+                     </Form.Group>
+                 </Col>
+             </Row>
+             <Row>
+                 <Col>
+                    <Form.Group className="mb-3">
+                      <Form.Label htmlFor="diploma">Último diploma obtenido</Form.Label>
+                       <Form.Control
+                          type="text"
+                          name="diploma"
+                          placeholder=""
+                          id="diploma"
+                          className="form-control" 
+                          onChange={formik.handleChange}
+                          value={formik.values.diploma}               
+                       />
+                      </Form.Group>
+                 </Col>
+             </Row>
+                        
            <Row className="mb-3">
-                <div className="col-md-6">
-                   <label htmlFor="nombre">¿Has tomado algún curso de programación?</label>
-                   <Field name="optioncourse" 
+                <Col className="col-md-6">
+                   <Form.Label htmlFor="programming">¿Has tomado algún curso de programación?</Form.Label>
+                   <Form.Select name="programming.option" 
                           as="select" 
                           className="form-select"
-                          onChange={(e) => setOptionCourse(e.target.value)}
-                          value={optioncourse}>
+                          onChange={formik.handleChange}
+                          value={formik.values.programming.option} >
                      <option  value="Selecciona">Selecciona...</option>
                      <option  value="Si">Si</option>
                      <option  value="No">No</option>             
-                   </Field>
-                   <ErrorMessage name="optioncourse" component={() => ( <div className="error">{errors.optioncourse}</div>)} />
-                </div>
-                <div className="col-md-6">
-                   <label htmlFor="course">Nombre del curso</label>
-                   <Field
+                   </Form.Select>                   
+                </Col>
+
+                <Col className="col-md-6">
+                <Form.Group className="mb-3">
+                   <Form.Label htmlFor="programming.name">Nombre del curso</Form.Label>
+                   <Form.Control
                       type="text"
-                      name="course"
+                      name="programming.name"
                       placeholder=""
-                      id="course"
+                      id="programming.name"
                       className="form-control"
-                      onChange={(e) => setCourse(e.target.value)}
-                      value={course}
+                      onChange={formik.handleChange}
+                      value={formik.values.programming.name} 
                    />
-                <ErrorMessage name="course" component={() => ( <div className="error">{errors.course}</div>)} />
-                </div>
+                  </Form.Group> 
+                </Col>
            </Row>
 
            <Row className="mb-3">
-                <div className="col-md-6">
-                   <label htmlFor="nombre">¿Cuál es tu nivel de inglés?</label>
-                   <Field name="englishLevel" 
+                <Col className="col-md-6">
+                   <Form.Label htmlFor="english.level">¿Cuál es tu nivel de inglés?</Form.Label>
+                   <Form.Select name="english.Level" 
                           as="select" 
                           className="form-select"
-                          onChange={(e) => setEnglishLevel(e.target.value)}
-                          value={englishLevel}>
+                          onChange={formik.handleChange}
+                          value={formik.values.english.level}>
                      <option  value="Selecciona">Selecciona...</option>
-                     <option  value="Principiente">Principiante</option>
-                     <option  value="Intermedio">Intermedio</option>    
-                     <option  value="Avanzado">Avanzado</option>           
-                   </Field>
-                   <ErrorMessage name="englishLevel" component={() => ( <div className="error">{errors.englishLevel}</div>)} />
-                </div>
-        
-                <div className="col-md-6">
-                   <label htmlFor="nombre">¿Has utilizado el inglés para tu trabajo?</label>
-                   <Field name="useEnglish" 
+                      <option value="A1">A1</option>
+                      <option value="A2">A2</option>
+                      <option value="B1">B1</option>
+                      <option value="B2">B2</option>
+                      <option value="C1">C1</option>
+                      <option value="C2">C2</option>           
+                   </Form.Select>
+                  
+                </Col>        
+                <Col className="col-md-6">
+                   <Form.Label htmlFor="nombre">¿Has utilizado el inglés para tu trabajo?</Form.Label>
+                   <Form.Select name="english.useEnglish" 
                           as="select" 
                           className="form-select"
-                          onChange={(e) => setUseEnglish(e.target.value)}
-                          value={useEnglish} >
+                          onChange={formik.handleChange}
+                          value={formik.values.english.useEnglish}
+                          >
                      <option  value="Selecciona">Selecciona...</option>
                      <option  value="Si">Si</option>
                      <option  value="No">No</option>             
-                   </Field>
-                   <ErrorMessage name="useEnglish" component={() => ( <div className="error">{errors.useEnglish}</div>)} />
-                </div>
+                   </Form.Select>
+                  
+                </Col>
           </Row>
-          
-     
+         
+          <Row>
+               <Col>
+                 <Form.Group className="mb-3">
+                 <Form.Label htmlFor="question16">¿Cuál fue tu puntaje en las pruebas de estado del bachillerato?:</Form.Label> 
+                <Form.Control type='number'
+                name="score" 
+                id='question16'
+                className='form-control'
+                onChange={formik.handleChange}
+                value={formik.values.score}
+                ></Form.Control>
+               </Form.Group>
+             </Col>
+         </Row>   
+              
+            <Row >               
+              <Col className="col-md-6">
+              <Form.Group className="mb-3">
+                  <Form.Label htmlFor="question17">¿Cuántos años de experiencia laboral tienes? </Form.Label>
+                  <Form.Control
+                   name="experience.years"
+                   id="question17" 
+                   type="number"
+                    className="form-control"
+                    onChange={formik.handleChange}
+                    value={formik.values.experience.years}
+                    /> 
+                 </Form.Group>
+               </Col>
+               <Col className="col-md-6">
+                  <Form.Group className="mb-3">  
+                <Form.Label htmlFor="question17-1">¿En qué área? </Form.Label> 
+                <Form.Control 
+                name="experience.area"
+                id="question17-1"
+                className="form-control" 
+                type="text"e
+                onChange={formik.handleChange}
+                value={formik.values.experience.area}/>
+                  </Form.Group>
+               </Col>             
+            </Row> 
+            <Row className="mb-3">   
+               <Col className="col-md-6">
+                  <Form.Label  htmlFor="question-18-1"> ¿Has realizado algún emprendimiento?</Form.Label> 
+                <Form.Select 
+                as="select" 
+                className="form-select"
+                name="entrepreneurship.option"  
+                id="question-18-1" 
+                placeholder=""
+                onChange={formik.handleChange}
+                value={formik.values.entrepreneurship.option}>
+                   <option  value="Selecciona">Selecciona...</option>
+                   <option  value="Si">Si</option>
+                   <option  value="No">No</option>                  
+                </Form.Select>                                
+               </Col>        
+            
+               <Col className="col-md-6">
+               <Form.Group className="mb-3">
+                   <Form.Label  htmlFor="question-18-2">¿Cual es tu  emprendimiento?</Form.Label> 
+                  <Form.Control type="text" id="question-18-2"
+                   class="form-control"
+                   name="entrepreneurship.name"
+                   onChange={formik.handleChange}
+                   value={formik.values.entrepreneurship.name}></Form.Control> 
+                  </Form.Group>
+               </Col>
+            </Row>  
+            <Row className="mb-3">    
+               <Col className="col-md-6">
+                  <Form.Label  htmlFor="question-19-1"> ¿Utilizas alguna plataforma de aprendizaje en línea?:</Form.Label> 
+                 <Form.Select className="form-select"  as="select" id="question-19-1"
+                 name="platforms.option" 
+                 placeholder=""
+                 onChange={formik.handleChange}
+                 value={formik.values.platforms.option}>
+                     <option  value="Selecciona">Selecciona...</option>
+                     <option  value="Si">Si</option>
+                     <option  value="No">No</option>
+                 </Form.Select> 
+               </Col>
+             
+               <Col className="col-md-6">
+               <Form.Group className="mb-3">
+                   <Form.Label  htmlFor="question-19-2">¿Cuál es la plataforma que más utilizas?:</Form.Label> 
+                   <Form.Control type="text"
+                   id="question-19-2"
+                   className="form-control"
+                   name="platforms.name"
+                   onChange={formik.handleChange}
+                   value={formik.values.platforms.name}
+                   
+                   ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+               <Col>
+                  <Form.Label  htmlFor="question-22-1"> ¿Tienes computador y una buena conexión a Internet que te permita ver los videos de la formación?</Form.Label> 
+                  <Form.Select className="form-select"  id="question-22-1" placeholder="" 
+                  as="select"
+                  name="computer"
+                  onChange={formik.handleChange}
+                  value={formik.values.computer}
+                  >                  
+                     <option  value="Selecciona">Selecciona...</option>
+                     <option  value="Si">Si</option>
+                     <option  value="No">No</option>
+                  </Form.Select>
+               </Col>  
+          </Row>
+
+            <Row className="mb-3">               
+               <Col className="col-md-6">
+                    <Form.Label  htmlFor="question-23-1"> ¿Has participado en algún proyecto tecnológico?</Form.Label> 
+                    <Form.Select className="form-select"   as="select"
+                    name="projects.option" 
+                    id="question-23-1" 
+                    placeholder=""
+                    onChange={formik.handleChange}
+                    value={formik.values.projects.option}>
+                     <option  value="Selecciona">Selecciona...</option>
+                     <option  value="Si">Si</option>
+                     <option  value="No">No</option>
+                    </Form.Select>
+                </Col>  
+
+                 <Col className="col-md-6">
+                 <Form.Group className="mb-3">
+                     <Form.Label  htmlFor="question-23-2">¿Cuál?</Form.Label>
+                     <Form.Control id="question-23-2"
+                      type="text" 
+                      name="projects.name"
+                      className="form-control"
+                      onChange={formik.handleChange}
+                      value={formik.values.projects.name}>
+
+                      </Form.Control>
+                      </Form.Group>
+                     
+                 </Col>            
+            </Row>
+
+            <Row>
+            <Col>
+            <Form.Group className="mb-3">
+               <Form.Label htmlFor="question-25-1"align="start">¿Cuáles son tus intereses o Hobbies? </Form.Label> 
+               <Form.Control type="text" className="form-control" id="question-25-1"
+               name="hobbies"
+               onChange={formik.handleChange}
+               value={formik.values.hobbies}/>
+               </Form.Group>
+            </Col>
+            </Row>
+            <Row>
+             <Col>
+               <Form.Group className="mb-3">            
+               <Form.Label  htmlFor="question-26-1">¿Por qué quieres hacer este programa?</Form.Label>  
+               <Form.Control id="question-26-1"type="text" className="form-control"
+               name="reason"
+               onChange={formik.handleChange}
+               value={formik.values.reason}></Form.Control>
+              </Form.Group>
+            </Col>
+            </Row>
+            <Row>         
+
+            <Col>
+            <Form.Group className="mb-3">
+               <Form.Label  htmlFor="question-27-1">¿Cuáles son las situaciones de éxito que has vivido?</Form.Label>
+               <Form.Control id='question-27-1'type='text' className='form-control'
+               name="success"
+               onChange={formik.handleChange}
+               value={formik.values.success}></Form.Control>
+               </Form.Group>
+            </Col>
+            </Row>
+
+            <Row>
+            <Col>
+                 <Form.Group className="mb-3">
+               <Form.Label  htmlFor="question-28-1">Del 100% de lo que sabes ¿Cómo ha sido tu proceso de formación?</Form.Label>  
+                <Form.Control id='question-28-1'type='text' className='form-control'name="education"
+                onChange={formik.handleChange}
+                value={formik.values.education}></Form.Control>
+               </Form.Group>
+            </Col>
+            </Row>
+
+            <Row>
+            <Col>
+                <Form.Group className="mb-3">
+               <Form.Label htmlFor="question-29-1">¿Qué esperas de tu vida profesional, qué esperas hacer?</Form.Label> 
+               <Form.Control id='question-27-1' type='text' className="form-control"
+               name="dreamslife"
+               onChange={formik.handleChange}
+               value={formik.values.dreamslife}></Form.Control>
+             </Form.Group>
+            </Col>
+            </Row>
+            <Button onClick={() => setFormSend(true)} type="submit" onReset>
+                Enviar
+             </Button>
             
            </Form>
+            <Alert show={FormSend} variant="success">
+            <Alert.Heading>Usuario Registrado con Exito</Alert.Heading>            
+               <div className="d-flex justify-content-end">
+                  <Button onClick={() => setFormSend(false)} variant="outline-success" type="reset">
+                     Cerrar
+                  </Button>
+               </div>
+            </Alert>        
+       </div>
 
-          )}
-     
-      </Formik>
-      </> 
+          );
+      
     
-   );
+   
 };

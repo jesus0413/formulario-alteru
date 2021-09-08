@@ -1,22 +1,13 @@
-<<<<<<< HEAD
-
-import  Form from './pages/Register';
-
-=======
 import Navbar from './components/Navbar/index';
 import {Register} from './pages/Register/index';
 import {Homepages} from './pages/Homepages/index';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
->>>>>>> First-14-inputs
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-<<<<<<< HEAD
-     <Form/>
-=======
-      <Router>
+       <Router>
         <Navbar/>  
         <div className="pages">
         <Switch>                 
@@ -30,7 +21,6 @@ function App() {
         </div>          
            
       </Router> 
->>>>>>> First-14-inputs
     </div>
   );
 }
