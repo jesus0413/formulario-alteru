@@ -4,7 +4,7 @@ import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import { useState } from 'react';
 import { Alert } from 'react-bootstrap';
-import { db } from '../../utils/firebase';
+import { db } from '../../utils/firebase.js';
 import { addDoc, collection } from '@firebase/firestore';
 
 
@@ -115,9 +115,9 @@ export const Register = () => {
                education:formik.values.education,
                dreamslife:formik.values.dreamslife, 
         });
-        console.log("Document written with ID: ", docRef.id);
+        console.log("Document written with ID:", docRef.id);
       } catch (e) {
-        console.error("Error adding document: ", e);
+        console.error("Error adding document:", e);
       }
     }
   
