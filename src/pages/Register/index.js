@@ -190,9 +190,9 @@ const validate = Yup.object({
    birthPlace: Yup.string()
      .max(20, 'Must be 20 characters or less')
      .required('Required'),
-    email: Yup.string()
-     .max(20, 'Must be 20 characters or less')
-     .required('Required'),
+  email: Yup.string()
+    .email('Invalid email format')
+    .required('Required'),
    diploma: Yup.string()
      .max(20, 'Must be 20 characters or less')
      .required('Required'),
@@ -267,7 +267,7 @@ const validate = Yup.object({
       
       >
        {({errors, touched}) => (
-           <Form className='Formulario' onSubmit={handleSubmit} >
+           <Form className='form' onSubmit={handleSubmit} >
             
            <Row className="mb-3">
               <div className="col-md-6">
@@ -345,7 +345,7 @@ const validate = Yup.object({
                       name="documentNumber"
                       placeholder=""
                       id="document.number"
-                      className="form-control-top" 
+                      className="form-control" 
                       onChange={(e) => setDocumentNumber(e.target.value)}
                       value={documentNumber}   required
                    />
@@ -550,7 +550,7 @@ const validate = Yup.object({
                
                         <label  className="label" htmlFor="question-18-2">¿Cual es tu  emprendimiento?</label> 
                        <Field type="text" id="question-18-2"
-                        className="form-control-top"
+                        className="form-control"
                         name="entrepreneurship.name"
                         onChange={(e) => setEntrepreneurshipName(e.target.value)}
                         value={entrepreneurshipName}></Field> 

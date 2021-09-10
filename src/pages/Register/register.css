@@ -12,7 +12,7 @@
 	margin: 24px;
 }
 
-.formulario {
+.form {
 	font-family: 'Roboto', sans-serif;
 	margin-top: 50px;
 	background: #fff;
@@ -25,7 +25,7 @@
 	margin-bottom: 20px;
 }
 
-.formulario label {
+.form label {
 	display: flex;
 	justify-content: flex-start;
 	font-weight: 600;
@@ -46,7 +46,7 @@
 
 }
 
-.formulario input {
+.form input {
 	font-family: 'Roboto', sans-serif;
 	width: 100%;
 	border-radius: 5px;
@@ -57,18 +57,18 @@
 	color: #1f1f1f;
 }
 
-.formulario input:focus {
+.form  input:focus {
 	outline: none;
 	border: 2px solid #652ec5;
 }
 
-.formulario .error {
+.form .error {
 	color: #e92b2d;
 	font-weight: 600;
 	font-size: 12px;
 }
 
-.formulario button[type="submit"] {
+.form button[type="submit"] {
 	display: flex;
 	justify-content: center;
 	background: #652ec5;
@@ -83,17 +83,17 @@
 	transition: .3s ease all;
 }
 
-.formulario button[type="submit"]:hover {
+.form button[type="submit"]:hover {
 	background: #9273c7;
 }
 
-.formulario .exito {
+.form .exito {
 	text-align: center;
 	font-size: 14px;
 	padding-top: 20px;
 	color: #02a802;
 }
 
-.formulario input[type="radio"] {
+.form input[type="radio"] {
 	width: auto;
 }
