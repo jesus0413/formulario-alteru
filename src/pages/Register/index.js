@@ -1,7 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React, { useState } from 'react';
 import { Row, Button, Form} from 'react-bootstrap';
-//import { Alert } from 'react-bootstrap';
 import './register.css';
 import * as Yup from 'yup';
 import { Field, Formik, } from 'formik';
@@ -12,8 +11,7 @@ import { db } from '../../utils/firebase'
 export const Signup = () => {
  
    const [FormSend, setFormSend] = useState(false);
-   const [show, setShow] = useState(false);
-
+   const [loader, setLoader] = useState(false);
 
    const [fullname, setFullName] = useState("");
    const [address, setAddress] = useState("");
@@ -50,6 +48,7 @@ export const Signup = () => {
  
    async function handleSubmit(e) {
       e.preventDefault();
+      setLoader(true)
       console.log("Click Firebase");
       try {
         const docRef = await addDoc(collection(db, "users"), {
@@ -99,12 +98,50 @@ export const Signup = () => {
           education:education,
           dreamslife:dreamslife,
           
-        });
+        })
+        
+        .then(() => {
+         setLoader(false);
+         alert("👍 Registro exitoso, ¡Gracias! ");
+       })
+       .catch((error) => {
+         alert(error.message);
+         setLoader(false);
+       });
         console.log("Document written with ID: ", docRef.id);
       } catch (e) {
         console.error("Error adding document: ", e);
       }    
       
+       setFullName("");
+       setAddress("");
+       setStatus("");
+       setResidence("");     
+       setDocumentType("");
+       setDocumentNumber("");     
+       setBirthday ("");
+       setBirthPlace("");    
+       setEmail("");
+       setDiploma("");     
+       setProgrammingOption("");
+       setProgrammingName("");     
+       setEnglishLevel("");
+       setUseEnglish("");     
+       setScore("");           
+       setExperienceYears("");
+       setExperienceArea("");          
+       setEntrepreneurshipOption("");
+       setEntrepreneurshipName("");           
+       setPlatformsOption("");
+       setPlatformsName("");
+       setComputer("");           
+       setProjectsOption("");
+       setProjectsName("");           
+       setHobbies("");
+       setReason("");
+       setSuccess("");
+       setEducation("");
+       setDreamslife("");
        
    }
  
@@ -191,8 +228,14 @@ const validate = Yup.object({
    //  .max(20, 'Must be 20 characters or less')
    //  .required('Required'),
   email: Yup.string()
-    .email('Invalid email format')
-    .required('Required'),
+    .email()
+    .label('Email')
+    .when('showEmail', {
+       is:true,
+       then: Yup.string().
+       required('Ingresse su correo electronico'),
+    }),
+    
    diploma: Yup.string()
      .max(20, 'Must be 20 characters or less')
      .required('Required'),
@@ -273,7 +316,7 @@ const validate = Yup.object({
               <div className="col-md-6">
                  <label htmlFor="fullname">Nombre Completo</label>
                  <Field type="text"  name="fullname"  placeholder=""  id="fullname" className="form-control" onChange={(e) => setFullName(e.target.value)} value={fullname} />
-                 {touched.fullname && errors.fullname && <div className="error">{errors.fullname}</div>}   
+                  
               </div>
 
               
@@ -282,7 +325,7 @@ const validate = Yup.object({
                  <label htmlFor="address">Dirección</label>
                  <Field type="text" name="address"placeholder=""id="address"className="form-control"
                     onChange={(e) => setAddress(e.target.value)} value={address} />
-                {touched.address && errors.address && <div className="error">{errors.address}</div>}
+               
               </div>
              
               </Row>
@@ -300,7 +343,7 @@ const validate = Yup.object({
                             <option value="Casado">Casado</option>
                    </Field>
                    
-                   {touched.status && errors.status && <div className="error">{errors.status}</div>}
+                  
              </div>
                   
 
@@ -314,8 +357,7 @@ const validate = Yup.object({
                       className="form-control" 
                       onChange={(e) => setResidence(e.target.value)}
                       value={residence}/>
-                                 
-                  {touched.residence && errors.residence && <div className="error">{errors.residence}</div>}
+                 
              </div>
              </Row>
 
@@ -349,7 +391,7 @@ const validate = Yup.object({
                       onChange={(e) => setDocumentNumber(e.target.value)}
                       value={documentNumber}   required
                    />
-                  {touched.documentNumber && errors.documentNumber && <div className="error">{errors.documentNumber}</div>}
+                
                </div>
              </Row>
              <Row className="mb-3">
@@ -367,7 +409,7 @@ const validate = Yup.object({
                    />
 
 
-                    {touched.birthday && errors.birthday && <div className="error">{errors.birthday}</div>}
+                    
               </div> 
               <div className="col-md-6">
                  
@@ -382,7 +424,7 @@ const validate = Yup.object({
                       value={birthPlace}   required
                    />
 
-                    {touched.birthdayPlace && errors.birthdayPlace && <div className="error">{errors.birthdayPlace}</div>}
+                    
             </div> 
            </Row>
 
@@ -399,7 +441,7 @@ const validate = Yup.object({
                          value={email}   required       
                       />
 
-                     {touched.email && errors.email && <div className="error">{errors.email}</div>}
+                     
                 </div> 
             </Row>
              <Row>
@@ -414,7 +456,7 @@ const validate = Yup.object({
                           onChange={(e) => setDiploma(e.target.value)}
                           value={diploma}   required               
                        />
-                        {touched.diploma && errors.diploma && <div className="error">{errors.diploma}</div>}
+                        
             
                    
                  </div>
@@ -432,7 +474,7 @@ const validate = Yup.object({
                      <option  value="Si">Si</option>
                      <option  value="No">No</option>             
                    </Field>  
-                   {touched.programmingOption && errors.programmingOption && <div className="error">{errors.programmingOption}</div>}                 
+                                  
                 </div>
 
                 <div className="col-md-6">
@@ -447,7 +489,7 @@ const validate = Yup.object({
                       onChange={(e) => setProgrammingName(e.target.value)}
                       value={programmingName}   required
                    />
-                    {touched.programmingName && errors.programmingName && <div className="error">{errors.programmingName}</div>}
+                   
                 
                 </div>
            </Row>
@@ -468,7 +510,7 @@ const validate = Yup.object({
                       <option value="C1">C1</option>
                       <option value="C2">C2</option>           
                    </Field>
-                   {touched.englishLevel && errors.englishLevel && <div className="error">{errors.englishLevel}</div>}
+                  
                 </div>        
                 <div className="col-md-6">
                    <label  className="label" htmlFor="nombre">¿Has utilizado el inglés para tu trabajo?</label>
@@ -482,7 +524,7 @@ const validate = Yup.object({
                      <option  value="Si">Si</option>
                      <option  value="No">No</option>             
                    </Field>
-                   {touched.useEnglish && errors.useEnglish && <div className="error">{errors.useEnglish}</div>}
+                   
                 </div>
           </Row>
           <Row className="mb-3">
@@ -495,7 +537,7 @@ const validate = Yup.object({
                    onChange={(e) => setScore(e.target.value)}
                    value={score}
                    ></Field>
-             {touched.score && errors.score && <div className="error">{errors.score}</div>}
+             
               
              </div>
          </Row>
@@ -511,7 +553,7 @@ const validate = Yup.object({
                         onChange={(e) => setExperienceYears(e.target.value)}
                         value={experienceYears}
                         /> 
-                {touched.experienceYears && errors.experienceYears && <div className="error">{errors.experienceYears}</div>} 
+               
                </div>
                <div className="col-md-6">
                    
@@ -523,7 +565,7 @@ const validate = Yup.object({
                         type="text"
                         onChange={(e) => setExperienceArea(e.target.value)}
                         value={experienceArea}/>
-                {touched.experienceArea && errors.experienceArea && <div className="error">{errors.experienceArea}</div>} 
+                
                </div>             
             </Row> 
 
@@ -543,7 +585,7 @@ const validate = Yup.object({
                           <option  value="No">No</option>                  
                        </Field>    
 
-            {touched.entrepreneurshipOption && errors.entrepreneurshipOption && <div className="error">{errors.entrepreneurshipOption}</div>}                       
+                                  
                </div>        
             
                <div className="col-md-6">
@@ -555,7 +597,7 @@ const validate = Yup.object({
                         onChange={(e) => setEntrepreneurshipName(e.target.value)}
                         value={entrepreneurshipName}></Field> 
                 
-            {touched.entrepreneurshipName && errors.entrepreneurshipName && <div className="error">{errors.entrepreneurshipName}</div>} 
+           
                </div>
             </Row>
 
@@ -571,7 +613,7 @@ const validate = Yup.object({
                      <option  value="Si">Si</option>
                      <option  value="No">No</option>
                  </Field> 
-         {touched.platformsOption && errors.platformsOption && <div className="error">{errors.platformsOption}</div>}  
+           
                </div>
              
                <div className="col-md-6">
@@ -586,7 +628,7 @@ const validate = Yup.object({
                    onChange={(e) => setPlatformsName(e.target.value)}
                    ></Field>
                    
-         {touched.platformsName && errors.platformsName && <div className="error">{errors.platformsName}</div>}
+        
                 
               </div>
             </Row>
@@ -604,7 +646,7 @@ const validate = Yup.object({
                      <option  value="Si">Si</option>
                      <option  value="No">No</option>
                   </Field>
-           {touched.computer && errors.computer && <div className="error">{errors.computer}</div>}
+          
                </div>  
           </Row>
           <Row className="mb-3">               
@@ -621,7 +663,7 @@ const validate = Yup.object({
                      <option  value="Si">Si</option>
                      <option  value="No">No</option>
                     </Field>
-                    {touched.projectsOption && errors.projectsOption && <div className="error">{errors.projectsOption}</div>}
+                    
                 </div>  
 
                  <div className="col-md-6">
@@ -636,7 +678,7 @@ const validate = Yup.object({
 
                       </Field>
                      
-                      {touched.projectsName && errors.projectsName && <div className="error">{errors.projectsName}</div>}
+                     
                  </div>            
             </Row>
 
@@ -650,7 +692,7 @@ const validate = Yup.object({
                />
               
             </div>
-            {touched.hobbies && errors.hobbies && <div className="error">{errors.hobbies}</div>}
+            
             </Row>
             <Row className="mb-3">
              <div>
@@ -663,7 +705,7 @@ const validate = Yup.object({
               
             </div>
 
-            {touched.reason && errors.reason && <div className="error">{errors.reason}</div>}
+            
             </Row>
             
             <Row className="mb-3">         
@@ -678,7 +720,7 @@ const validate = Yup.object({
              
             </div>
 
-            {touched.success && errors.success && <div className="error">{errors.success}</div>}
+            
             </Row>
 
             <Row className="mb-3">
@@ -690,7 +732,7 @@ const validate = Yup.object({
                 ></Field>
               
             </div>
-            {touched.education && errors.education && <div className="error">{errors.education}</div>}
+           
             </Row>
 
             <Row className="mb-3">
@@ -703,29 +745,17 @@ const validate = Yup.object({
               ></Field>
 
             </div>
-            {touched.dreamslife && errors.dreamslife && <div className="error">{errors.dreamslife}</div>}
-            </Row>
-
-
-     
-              <Button onClick={() => setFormSend(true)} type="submit" onReset>
+           
+            </Row>     
+              <Button onClick={() => setFormSend(true)} type="submit" style={{ background: loader ? "#e2e2e2 " : " #652ec5" }}>
                 Enviar
              </Button> 
-              
-              
-             {FormSend && <p className="exito">Formulario enviado con exito</p>}
-                     
-             
+             {FormSend && <p className="exito">Formulario enviado con exito</p>}       
+     
            </Form>
-                
-               
- 
+      
           )}
  
-         
- 
-         
-     
       </Formik>
       </> 
     

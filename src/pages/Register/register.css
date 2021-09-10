@@ -46,6 +46,18 @@
 
 }
 
+.form-control{
+	font-family: 'Roboto', sans-serif;	
+	border-radius: 5px;
+	border: 2px solid #e2e2e2;
+	font-size: 18px;
+	padding: 10px;
+	margin-bottom: 5px;
+	color: #1f1f1f;
+	background-color: whitesmoke;
+
+}
+
 .form input {
 	font-family: 'Roboto', sans-serif;
 	width: 100%;
@@ -55,11 +67,13 @@
 	padding: 10px;
 	margin-bottom: 5px;
 	color: #1f1f1f;
+	background-color: white;
 }
 
 .form  input:focus {
 	outline: none;
 	border: 2px solid #652ec5;
+	
 }
 
 .form .error {
