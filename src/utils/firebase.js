@@ -4,12 +4,12 @@ import { getFirestore } from "firebase/firestore"
 
 const firebaseApp = initializeApp({
     
-  apiKey: "AIzaSyBLDipkFW9mASvbQzcRRaSL5ENKc5eIFqo",
-  authDomain: "form-register-59789.firebaseapp.com",
-  projectId: "form-register-59789",
-  storageBucket: "form-register-59789.appspot.com",
-  messagingSenderId: "20280864206",
-  appId: "1:20280864206:web:254fcaa9c711f4834f4f9f"    
+  apiKey: "AIzaSyCsYlP2yma4hXdxhowxmQTEtvobsr2NS_k",
+  authDomain: "form-alteru.firebaseapp.com",
+  projectId: "form-alteru",
+  storageBucket: "form-alteru.appspot.com",
+  messagingSenderId: "707297274773",
+  appId: "1:707297274773:web:71022a5b626c03b857649c"
 
 });
 
