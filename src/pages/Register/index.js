@@ -124,10 +124,10 @@ export const Signup = () => {
    residence:'',
    document:{
       type:'',
-      number:0,
+      number: 0,
    },
    birthday:{
-      date: "",
+      date: 0,
       birthPlace:'',
    },
    email:'',
@@ -184,12 +184,12 @@ const validate = Yup.object({
    documentNumber: Yup.string()
      .max(20, 'Must be 20 characters or less')
      .required('Required'),
-   birthday: Yup.string()
-     .max(20, 'Must be 20 characters or less')
-     .required('Required'),
-   birthPlace: Yup.string()
-     .max(20, 'Must be 20 characters or less')
-     .required('Required'),
+   //birthday: Yup.string()
+   //  .max(20, 'Must be 20 characters or less')
+   //  .required('Required'),
+   //birthPlace: Yup.string()
+   //  .max(20, 'Must be 20 characters or less')
+   //  .required('Required'),
   email: Yup.string()
     .email('Invalid email format')
     .required('Required'),
@@ -333,7 +333,7 @@ const validate = Yup.object({
                        <option value="TarjetaIdentidad">Tarjeta de Identidad</option>
                        <option value="Pasaporte">Pasaporte</option>
                      </Field>
-                     {touched.documentType && errors.documentType && <div className="error">{errors.documentType}</div>}
+                  
                     
                </div>
                <div className="col-md-6">
@@ -359,7 +359,7 @@ const validate = Yup.object({
                    <Field
                       type="date"
                       name="birthday"
-                      placeholder="DD/MM/AA"
+                      placeholder="DD / MM /AA"
                       id="birthday"
                       className="form-control"
                       onChange={(e) => setBirthday(e.target.value)}
